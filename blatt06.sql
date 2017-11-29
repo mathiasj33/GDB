@@ -26,4 +26,12 @@ Aufgabe 3)
 select s.* from studenten s where not exists (select * from pruefen p where p.matrnr = s.matrnr and not exists (select * from hoeren h where h.matrnr = s.matrnr and h.vorlnr = p.vorlnr))
 
 
+Aufgabe 4)
 
+with recursive pfad(von,nach,l) as (
+     (select vor.vorgaenger, v.vorlnr, 1 from Vorlesungen v, voraussetzen vor where v.Titel = 'Der Wiener Kreis' and v.vorlnr = 					vor.nachfolger)
+     union all
+     (select t.vorgaenger, p.nach, 1+p.l from voraussetzen t, pfad p where t.nachfolger = p.von)),
+     maxLaenge as (select max(l) from pfad)
+     
+select 1 + (case when (select * from maxLaenge) is null then 0 else (select * from maxLaenge) end)
