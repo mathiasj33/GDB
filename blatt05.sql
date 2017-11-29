@@ -26,3 +26,7 @@ worseThanBolt as (
 select distinct z.name from Zehnkampfd z where not exists
 (select * from worseThanBolt w where z.name = w.name) /*Eigentlich mit minus aber das mag HyPer nicht...*/
 
+Alternativ (näher am Kalkül):
+
+select distinct z.name from zehnkampfd z where not exists (select * from zehnkampfd z2 where z2.name = z.name and exists (select * from zehnkampfd z3 where z3.name = ' Bolt ' and z3.punkte >= z2.punkte))
+
